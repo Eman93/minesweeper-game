@@ -1,7 +1,12 @@
-*exe
+*.exe
 \Minesweeper-WindowsForms\Minesweeper-WindowsForms\obj
 \Minesweeper-WindowsForms\Minesweeper-WindowsForms\bin
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+*.[cC]ache
+*.pdb
