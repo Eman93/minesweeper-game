@@ -39,6 +39,7 @@ namespace Minesweeper_WindowsForms
             else if (mediumRB.Checked == true) level = 'm';
 
             SharedData.mGrid = new MinesweeperGrid(level);
+            SharedData.startFlag = false; // the first click hasn't happened yet
 
             Form window = new GameBoard();
             window.Owner = this;

@@ -18,10 +18,78 @@ namespace Minesweeper_WindowsForms
         public GameBoard()
         {
             InitializeComponent();
+            DrowGrid();
+          
+        }
 
+   
+        private void GameBoard_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void grid_Tile_Click(object sender, EventArgs e)
+        {
+            // getting the row and coulmn of the tile 
+            Button tile = (sender as Button);
+            var pos= tile.Name.Substring(8);
+            int commaIndex = pos.IndexOf(',');
+            int i = Int32.Parse(pos.Substring(0, commaIndex));
+            int j = Int32.Parse(pos.Substring(commaIndex+1));
+
+            if (!SharedData.startFlag) //first click
+            {
+                SharedData.startFlag = true;
+                SharedData.mGrid.distributeMines(i, j);
+            }
+            
+            show_Tile(i, j, SharedData.mGrid.Grid[i, j]);
+
+
+        }
+
+
+        private void show_Tile( int i, int j, int tileValue)
+        {
+            buttons[i, j].Enabled = false;
+            // if it is mine
+            if (tileValue == -1)
+            {
+                //TODO end the game with losing
+            }
+            else if (tileValue == 0)
+            {
+                int r = buttons.GetLength(0);
+                int c = buttons.GetLength(1);
+
+                buttons[i, j].BackColor = Color.WhiteSmoke;
+                // revealing adjacent tiles 
+                for (int a = -1; a < 2; a++)
+                    for (int b = -1; b < 2; b++)
+                    {
+                        if ( !(a==0 &&b==0)   // not the same tile
+                            && i + a >= 0 && i + a < r    //to check boundaries
+                            && j + b >= 0 && j + b < c
+                            && buttons[i+a, j+b].Enabled) // not visited
+                            show_Tile(i+a, j+b,SharedData.mGrid.Grid[i+a, j+b]);
+                        
+                    }
+
+            }
+            else
+            {
+                buttons[i, j].BackColor = Color.WhiteSmoke;
+                buttons[i, j].Text = tileValue.ToString();
+                
+            }
+        }
+
+
+        private void DrowGrid()
+        {
             try
             {
-                int i, j, count = 0;
+                int i, j;
                 buttons = new Button[SharedData.mGrid.Grid.GetLength(0), SharedData.mGrid.Grid.GetLength(1)];
 
                 for (i = 0; i < buttons.GetLength(0); i++)
@@ -31,17 +99,16 @@ namespace Minesweeper_WindowsForms
                         buttons[i, j] = new Button(); //Creating the chess object//
                         buttons[i, j].BackColor = System.Drawing.SystemColors.ActiveCaption;
                         buttons[i, j].Location = new System.Drawing.Point(2 + i * 25, 70 + j * 25);
-                        buttons[i, j].Name = "gridTile" + count.ToString();
+                        buttons[i, j].Name = "gridTile" + i.ToString() + "," + j.ToString();
                         buttons[i, j].Size = new System.Drawing.Size(25, 25);
-                        buttons[i, j].TabIndex = count;
+                        buttons[i, j].TabIndex = 2;
                         buttons[i, j].TabStop = false;
-                       this.Controls.Add(this.buttons[i, j]);
-                        count++;
+                        buttons[i, j].Click += new EventHandler(grid_Tile_Click);
+
+                        this.Controls.Add(this.buttons[i, j]);
+
                     }
                 }
-
-
-
 
             }
             catch (Exception)
@@ -52,9 +119,6 @@ namespace Minesweeper_WindowsForms
 
         }
 
-        private void GameBoard_Load(object sender, EventArgs e)
-        {
 
-        }
     }
 }
