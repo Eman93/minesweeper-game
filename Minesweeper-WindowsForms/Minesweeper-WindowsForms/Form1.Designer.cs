@@ -80,6 +80,7 @@
             // 
             // playButton
             // 
+            this.playButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.playButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.playButton.Location = new System.Drawing.Point(80, 177);
             this.playButton.Name = "playButton";

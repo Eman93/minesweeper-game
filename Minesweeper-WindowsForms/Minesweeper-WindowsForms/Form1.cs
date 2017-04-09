@@ -33,7 +33,7 @@ namespace Minesweeper_WindowsForms
 
             SharedData.mGrid = new MinesweeperGrid(level);
             SharedData.startFlag = false; // the first click hasn't happened yet
-            SharedData.numberOfrevealedTiles = 0;
+            SharedData.numberOfRevealedTiles = 0;
             SharedData.numberOfRemainingFlags = SharedData.mGrid.NumberOfMines;
 
             Form window = new GameBoard();

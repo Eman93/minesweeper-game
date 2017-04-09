@@ -10,7 +10,7 @@ namespace Minesweeper_WindowsForms
     {
         public static MinesweeperGrid mGrid;
         public static bool startFlag;
-        public static int numberOfrevealedTiles;
+        public static int numberOfRevealedTiles;
         public static int numberOfRemainingFlags;
     }
 }

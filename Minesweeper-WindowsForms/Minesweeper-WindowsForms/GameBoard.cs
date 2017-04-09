@@ -14,21 +14,43 @@ namespace Minesweeper_WindowsForms
     {
 
         Button[,] buttons;
-
+        Timer timer = new Timer();
+        DateTime timeElapsed;
         public GameBoard()
         {
             InitializeComponent();
+            this.FormClosing += new FormClosingEventHandler(GameBoard_FormClosing);
+
+            // to use timer 
+            timer.Tick += new EventHandler(timer_Tick); 
+            timer.Interval = (1000) * (1);              // Timer will tick evert second
+            timer.Start();
+            timeElapsed = new DateTime(1,1,1,1,0,0);
+
+            // intializing the labels
             mines_label.Text = SharedData.numberOfRemainingFlags.ToString();
-            DrowGrid();
+
+            // to drow the minesweeper grid
+            DrowGrid(); 
 
         }
 
+        private void timer_Tick(object sender, EventArgs e)
+        {
+            timeElapsed= timeElapsed.AddSeconds(1);
+            time_label.Text= timeElapsed.Minute.ToString() +":"+ timeElapsed.Second.ToString();
+        }
 
         private void GameBoard_Load(object sender, EventArgs e)
         {
-
+            
         }
 
+        private void GameBoard_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Application.Exit();
+
+        }
 
         private void grid_Tile_Click(object sender, EventArgs e)
         {
@@ -65,6 +87,8 @@ namespace Minesweeper_WindowsForms
             if (tileValue == -1)
             {
                 //TODO end the game with losing
+                lose();
+                return;
             }
             else if (tileValue == 0)
             {
@@ -91,13 +115,26 @@ namespace Minesweeper_WindowsForms
             }
             else
             {
-
+                
                 buttons[i, j].BackColor = Color.WhiteSmoke;
                 buttons[i, j].Text = tileValue.ToString();
 
             }
+
+            // if all the tiles are revealed
+            if (++SharedData.numberOfRevealedTiles == (buttons.Length - SharedData.mGrid.NumberOfMines))
+                win();
         }
 
+        private void lose()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void win()
+        {
+            time_label.Text = "wooo";
+        }
 
         private void DrowGrid()
         {
