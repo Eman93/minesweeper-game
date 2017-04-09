@@ -12,9 +12,9 @@ using System.Windows.Forms;
 namespace Minesweeper_WindowsForms
 {
 
-    public partial class Form1 : Form
+    public partial class startForm : Form
     {
-        public Form1()
+        public startForm()
         {
             InitializeComponent();
 
@@ -42,10 +42,14 @@ namespace Minesweeper_WindowsForms
             this.Hide();
         }
 
+        private void label1_Click(object sender, EventArgs e)
+        {
 
+        }
 
+        private void easyRB_CheckedChanged(object sender, EventArgs e)
+        {
 
-
-
+        }
     }
 }

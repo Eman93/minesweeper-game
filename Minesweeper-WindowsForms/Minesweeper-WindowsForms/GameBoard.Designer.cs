@@ -88,7 +88,7 @@
             this.Controls.Add(this.pictureBox1);
             this.Name = "GameBoard";
             this.Padding = new System.Windows.Forms.Padding(7);
-            this.Text = "GameBoard";
+            this.Text = "Minesweeper GameBoard";
             this.Load += new System.EventHandler(this.GameBoard_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();

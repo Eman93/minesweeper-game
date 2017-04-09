@@ -104,7 +104,7 @@ namespace Minesweeper_WindowsForms
 
                 
                 // check if it is not a mine already
-                if ( !(startX ==r && startY ==c) && grid[i,j] !=-1)
+                if ( !(startX ==i && startY ==j) && grid[i,j] !=-1)
                 {
                     grid[i, j] = -1; // this tile represents a mine now
                     mines--;
