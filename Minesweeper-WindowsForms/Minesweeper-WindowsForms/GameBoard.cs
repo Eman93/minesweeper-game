@@ -15,7 +15,8 @@ namespace Minesweeper_WindowsForms
 
         Button[,] buttons;
         Timer timer = new Timer();
-        DateTime timeElapsed;
+        int second, minute;
+        bool formClosed = false;
         public GameBoard()
         {
             InitializeComponent();
@@ -25,9 +26,12 @@ namespace Minesweeper_WindowsForms
             timer.Tick += new EventHandler(timer_Tick); 
             timer.Interval = (1000) * (1);              // Timer will tick evert second
             timer.Start();
-            timeElapsed = new DateTime(1,1,1,1,0,0);
+            second = 0;
+            minute = 0;
 
             // intializing the labels
+
+            time_label.Text = minute.ToString() + ":" + second.ToString();
             mines_label.Text = SharedData.numberOfRemainingFlags.ToString();
 
             // to drow the minesweeper grid
@@ -37,8 +41,13 @@ namespace Minesweeper_WindowsForms
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            timeElapsed= timeElapsed.AddSeconds(1);
-            time_label.Text= timeElapsed.Minute.ToString() +":"+ timeElapsed.Second.ToString();
+            if ((++second) % 60 == 0)
+            {
+                minute++;
+                second = 0;
+            }
+                
+            time_label.Text= minute.ToString() +":"+ second.ToString();
         }
 
         private void GameBoard_Load(object sender, EventArgs e)
@@ -48,7 +57,14 @@ namespace Minesweeper_WindowsForms
 
         private void GameBoard_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Application.Exit();
+            timer.Stop();
+            if (!formClosed)
+            {
+                this.formClosed = true;
+                this.Owner.Show();
+                this.Close();
+            }
+
 
         }
 
@@ -87,7 +103,7 @@ namespace Minesweeper_WindowsForms
             if (tileValue == -1)
             {
                 //TODO end the game with losing
-                lose();
+                end_game(false);
                 return;
             }
             else if (tileValue == 0)
@@ -123,18 +139,69 @@ namespace Minesweeper_WindowsForms
 
             // if all the tiles are revealed
             if (++SharedData.numberOfRevealedTiles == (buttons.Length - SharedData.mGrid.NumberOfMines))
-                win();
+                end_game(true);
         }
 
-        private void lose()
+        /// <summary>
+        /// Ending the game in case of winning or losing
+        /// </summary>
+        /// <param name="state"> true for winning false for losing</param>
+        private void end_game(bool state)
         {
-            throw new NotImplementedException();
+            timer.Stop();
+            // getting mines locations
+            var minesLocations = SharedData.mGrid.LocationsOfMines;
+            int x, y;
+            DialogResult result;
+            if (state)
+            {
+                // revealing exploded mines
+                for (int i=0; i < SharedData.mGrid.NumberOfMines;i++)
+                {
+                    x = minesLocations[i].Item1;
+                    y = minesLocations[i].Item2;
+                    buttons[x, y].Image = Properties.Resources.RevealedMineCell;
+                }
+                result = MessageBox.Show("You win the game, Time :"+time_label.Text +
+                    "\nDo you wanna to play again?" ,
+               "WOOHOOOO",
+               MessageBoxButtons.YesNo);
+
+            }
+            else
+            {
+                for (int i = 0; i < SharedData.mGrid.NumberOfMines; i++)
+                {
+                    x = minesLocations[i].Item1;
+                    y = minesLocations[i].Item2;
+                    buttons[x, y].Image = Properties.Resources.ExplodedMineCell;
+                }
+
+               result = MessageBox.Show("You Lose.."+
+                    "\nDo you wanna play again?",
+               ":( OOOOH!",
+               MessageBoxButtons.YesNo);
+
+
+            }
+
+
+            //   this.formClosed = true;
+            if (result == DialogResult.Yes)
+            {
+                this.Close();
+
+            }
+            else
+            {
+                this.formClosed = true;
+                Application.Exit();
+                
+            }
+
         }
 
-        private void win()
-        {
-            time_label.Text = "wooo";
-        }
+       
 
         private void DrowGrid()
         {
@@ -149,7 +216,7 @@ namespace Minesweeper_WindowsForms
                     {
                         buttons[i, j] = new Button(); //Creating the chess object//
                         buttons[i, j].BackColor = System.Drawing.SystemColors.ActiveCaption;
-                        buttons[i, j].Location = new System.Drawing.Point(2 + i * 25, 70 + j * 25);
+                        buttons[i, j].Location = new System.Drawing.Point(7 + i * 25, 70 + j * 25);
                         buttons[i, j].Name = "gridTile" + i.ToString() + "," + j.ToString();
                         buttons[i, j].Size = new System.Drawing.Size(25, 25);
                         buttons[i, j].TabIndex = 2;

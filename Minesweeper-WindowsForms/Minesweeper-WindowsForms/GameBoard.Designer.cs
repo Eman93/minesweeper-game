@@ -28,13 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.mines_label = new System.Windows.Forms.Label();
             this.time_label = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
+            // 
+            // mines_label
+            // 
+            this.mines_label.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.mines_label.Location = new System.Drawing.Point(172, 36);
+            this.mines_label.Name = "mines_label";
+            this.mines_label.Size = new System.Drawing.Size(50, 18);
+            this.mines_label.TabIndex = 3;
+            this.mines_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // time_label
+            // 
+            this.time_label.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.time_label.Location = new System.Drawing.Point(62, 35);
+            this.time_label.Name = "time_label";
+            this.time_label.Size = new System.Drawing.Size(50, 18);
+            this.time_label.TabIndex = 4;
             // 
             // pictureBox2
             // 
@@ -55,23 +72,6 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // mines_label
-            // 
-            this.mines_label.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.mines_label.Location = new System.Drawing.Point(172, 36);
-            this.mines_label.Name = "mines_label";
-            this.mines_label.Size = new System.Drawing.Size(50, 18);
-            this.mines_label.TabIndex = 3;
-            this.mines_label.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // time_label
-            // 
-            this.time_label.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.time_label.Location = new System.Drawing.Point(62, 35);
-            this.time_label.Name = "time_label";
-            this.time_label.Size = new System.Drawing.Size(50, 18);
-            this.time_label.TabIndex = 4;
-            // 
             // GameBoard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -87,7 +87,7 @@
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
             this.Name = "GameBoard";
-            this.Padding = new System.Windows.Forms.Padding(10, 10, 25, 10);
+            this.Padding = new System.Windows.Forms.Padding(7);
             this.Text = "GameBoard";
             this.Load += new System.EventHandler(this.GameBoard_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();

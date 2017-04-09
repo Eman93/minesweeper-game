@@ -11,15 +11,18 @@ namespace Minesweeper_WindowsForms
     {
         int numberOfMines;
         int[,] grid;
+        Tuple<int, int>[] locationsOfMines;
 
-        /// <summary>
-        /// 
-        /// </summary>
+
+
+    #region constructors
+
         public MinesweeperGrid()
         {
            // the default values
             this.numberOfMines = 10;
             grid = new int[9, 9];
+            locationsOfMines = new Tuple<int, int>[10];
         }
 
         /// <summary>
@@ -32,32 +35,48 @@ namespace Minesweeper_WindowsForms
             {
                 this.numberOfMines = 99;
                 this.grid = new int[16, 30];
+                locationsOfMines = new Tuple<int, int>[99];
             }
             else if (level == 'm' || level == 'M')
             {
                 this.numberOfMines = 40;
                 this.grid = new int[16, 16];
+                locationsOfMines = new Tuple<int, int>[40];
             }
             else
             {
                 this.numberOfMines = 10;
                 this.grid = new int[9, 9];
+                locationsOfMines = new Tuple<int, int>[10];
             }
             
 
         }
 
+        #endregion
 
-       public  int NumberOfMines
+        #region Properties
+
+
+        public int NumberOfMines
         {
             get { return numberOfMines; }
-            set { numberOfMines = value; }
+
         }
        public int[,] Grid
         {
             get { return grid ; }
-            set { grid= value; }
+           
         }
+
+        public Tuple<int, int>[] LocationsOfMines
+        {
+            get { return locationsOfMines; }
+        }
+
+
+        #endregion
+
 
 
         /// <summary>
@@ -89,6 +108,7 @@ namespace Minesweeper_WindowsForms
                 {
                     grid[i, j] = -1; // this tile represents a mine now
                     mines--;
+                    locationsOfMines[mines] = new Tuple<int, int>(i, j);
                 }
 
             }
