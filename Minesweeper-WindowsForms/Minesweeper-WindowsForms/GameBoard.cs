@@ -18,6 +18,7 @@ namespace Minesweeper_WindowsForms
         public GameBoard()
         {
             InitializeComponent();
+            mines_label.Text = SharedData.numberOfRemainingFlags.ToString();
             DrowGrid();
           
         }
@@ -30,8 +31,13 @@ namespace Minesweeper_WindowsForms
 
         private void grid_Tile_Click(object sender, EventArgs e)
         {
-            // getting the row and coulmn of the tile 
             Button tile = (sender as Button);
+
+            // do nothing if it is flagged 
+            if (tile.Image != null)
+                return;
+            
+            // getting the row and coulmn of the tile 
             var pos= tile.Name.Substring(8);
             int commaIndex = pos.IndexOf(',');
             int i = Int32.Parse(pos.Substring(0, commaIndex));
@@ -51,7 +57,20 @@ namespace Minesweeper_WindowsForms
 
         private void show_Tile( int i, int j, int tileValue)
         {
+            /* As this tile can be showed by checking
+                * adjacent values from other tiles with zero values then,
+                * check if it is flagged to increase the remaining flags 
+                */
+            if (buttons[i, j].Image != null)
+            {
+                SharedData.numberOfRemainingFlags++;
+                mines_label.Text = SharedData.numberOfRemainingFlags.ToString();
+                buttons[i, j].Image = null;  
+            }
+           
+
             buttons[i, j].Enabled = false;
+
             // if it is mine
             if (tileValue == -1)
             {
@@ -62,7 +81,10 @@ namespace Minesweeper_WindowsForms
                 int r = buttons.GetLength(0);
                 int c = buttons.GetLength(1);
 
+                // show the tile
                 buttons[i, j].BackColor = Color.WhiteSmoke;
+                
+
                 // revealing adjacent tiles 
                 for (int a = -1; a < 2; a++)
                     for (int b = -1; b < 2; b++)
@@ -78,6 +100,7 @@ namespace Minesweeper_WindowsForms
             }
             else
             {
+
                 buttons[i, j].BackColor = Color.WhiteSmoke;
                 buttons[i, j].Text = tileValue.ToString();
                 
@@ -104,7 +127,7 @@ namespace Minesweeper_WindowsForms
                         buttons[i, j].TabIndex = 2;
                         buttons[i, j].TabStop = false;
                         buttons[i, j].Click += new EventHandler(grid_Tile_Click);
-
+                        buttons[i, j].MouseDown += new MouseEventHandler(right_Mouse_Click);
                         this.Controls.Add(this.buttons[i, j]);
 
                     }
@@ -118,7 +141,37 @@ namespace Minesweeper_WindowsForms
             }
 
         }
+        /// <summary>
+        /// this method is fired in case of right click on event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void right_Mouse_Click(object sender, MouseEventArgs e)
+        {
+            Button tile = sender as Button;
+            if ( SharedData.numberOfRemainingFlags > 0
+                && e.Button == MouseButtons.Right)
+            {
+                if (tile.Image != null)
+                {
+                    tile.Image = null;
+                    SharedData.numberOfRemainingFlags++;
+                    mines_label.Text = SharedData.numberOfRemainingFlags.ToString();
 
+                }
+                else
+                {
+                    SharedData.numberOfRemainingFlags--;
+                    mines_label.Text = SharedData.numberOfRemainingFlags.ToString();
+                    tile.Image = Image.FromFile("F:\\AfterGraduation\\SoftLock\\FlaggedCell.png");
+                }
+            }
+            
+        }
 
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

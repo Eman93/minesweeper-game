@@ -77,7 +77,7 @@ namespace Minesweeper_WindowsForms
             int c = grid.GetLength(1);
             int i, j;
 
-            //distributing Mines randomly
+            ///distributing Mines randomly///
             while (mines>0)
             {
                 i = rand.Next(0,r); // random row
@@ -94,7 +94,7 @@ namespace Minesweeper_WindowsForms
             }
 
 
-            /// counting the adjacent mines
+            /// counting the adjacent mines ///
             int sum;
             for (i=0; i<r; i++)
             {

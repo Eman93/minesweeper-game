@@ -8,7 +8,9 @@ namespace Minesweeper_WindowsForms
 {
     class SharedData
     {
-      public static MinesweeperGrid mGrid;
-      public static bool startFlag;
+        public static MinesweeperGrid mGrid;
+        public static bool startFlag;
+        public static int numberOfrevealedTiles;
+        public static int numberOfRemainingFlags;
     }
 }
